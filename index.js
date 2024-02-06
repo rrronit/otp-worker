@@ -1,12 +1,13 @@
 const { createClient } = require('redis');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 
 (async () => {
 
-
-  const subscriber = createClient({
-    url: process.env.redis_url
+console.log(process.env)
+  const subscriber =  createClient({
+    url: "redis://default:14b28c57a874402195147e14c67b18cf@us1-leading-mammoth-41204.upstash.io:41204"
   });
 
   await subscriber.connect();
