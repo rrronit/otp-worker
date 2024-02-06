@@ -1,13 +1,17 @@
 const { createClient } = require('redis');
 const nodemailer = require('nodemailer');
 require('dotenv').config();
+const express = require('express');
+const app = express();
+const port = 3001;
+app.get("/", (req, res) => {
+  res.send("perfect")
+})
 
+const redisConn = async () => {
 
-(async () => {
-
-console.log(process.env)
-  const subscriber =  createClient({
-    url: "redis://default:14b28c57a874402195147e14c67b18cf@us1-leading-mammoth-41204.upstash.io:41204"
+  const subscriber = createClient({
+    url: process.env.redis_url
   });
 
   await subscriber.connect();
@@ -20,7 +24,7 @@ console.log(process.env)
   });
 
 
-})();
+};
 
 
 const sendMessage = async (email, otp) => {
@@ -40,3 +44,6 @@ const sendMessage = async (email, otp) => {
   await transporter.sendMail(mailOptions)
 
 }
+
+
+app.listen(port, () => { redisConn() })
